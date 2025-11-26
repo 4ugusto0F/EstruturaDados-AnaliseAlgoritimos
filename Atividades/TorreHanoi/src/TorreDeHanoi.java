@@ -1,16 +1,19 @@
-import java.util.Stack;
 
 public class TorreDeHanoi {
     //Torres
-    private Stack<Integer> A =  new Stack<>();
-    private Stack<Integer> B =  new Stack<>();
-    private Stack<Integer> C =  new Stack<>();
+    private Pilha A;
+    private Pilha B;
+    private Pilha C;
 
     //Limitação par quantidade de discos na torre
     private final Integer LIMITE = 3;
     private int numeroDeMovimentos = 0;
+
     //Inicializando a torre já com os disco em ordem na primeira torre!
     public TorreDeHanoi(){
+        this.A = new Pilha(LIMITE);
+        this.B = new Pilha(LIMITE);
+        this.C = new Pilha(LIMITE);
         A.push(3);
         A.push(2);
         A.push(1);
@@ -20,8 +23,8 @@ public class TorreDeHanoi {
 
  //Metodo que aceita char como entrada, e entra em contato com o metodo interno que move os discos
     public void moverDisco(char origemChar, char destinoChar) {
-        Stack<Integer> torreOrigem = getTorreFromChar(origemChar);
-        Stack<Integer> torreDestino = getTorreFromChar(destinoChar);
+        Pilha torreOrigem = getTorreFromChar(origemChar);
+        Pilha torreDestino = getTorreFromChar(destinoChar);
 
         if (torreOrigem == null || torreDestino == null) {
             System.out.println("Nome de torre inválido. Use A, B ou C.");
@@ -31,7 +34,7 @@ public class TorreDeHanoi {
         moverDiscoInterno(torreOrigem, torreDestino);
     }
 
-    private void moverDiscoInterno(Stack<Integer> torreOrigem, Stack<Integer> torreDestino) {
+    private void moverDiscoInterno(Pilha torreOrigem, Pilha torreDestino) {
         if( torreOrigem.isEmpty() ){
             System.out.println("A torre de origem está vazia");
             return;
@@ -58,7 +61,7 @@ public class TorreDeHanoi {
     }
 
     //Regra que um disco maior não vai em um disco menor
-    private boolean verificadorDeDisco(Stack<Integer> torreOrigem, Stack<Integer> torreDestino) {
+    private boolean verificadorDeDisco(Pilha torreOrigem, Pilha torreDestino) {
         if (torreDestino.isEmpty() || torreOrigem.peek() < torreDestino.peek()) {
             return true;
         }
@@ -106,7 +109,7 @@ public class TorreDeHanoi {
     }
 
     // Métodos auxiliares privados para tradução
-    private Stack<Integer> getTorreFromChar(char nomeTorre) {
+    private Pilha getTorreFromChar(char nomeTorre) {
         switch (Character.toUpperCase(nomeTorre)) {
             case 'A': return this.A;
             case 'B': return this.B;
@@ -115,7 +118,7 @@ public class TorreDeHanoi {
         }
     }
 
-    private char getNomeDaTorre(Stack<Integer> torre) {
+    private char getNomeDaTorre(Pilha torre) {
         if (torre == this.A) return 'A';
         if (torre == this.B) return 'B';
         if (torre == this.C) return 'C';
