@@ -10,65 +10,80 @@ public class ListaEncadeada<T> implements Lista<T> {
         this.tamanho = 0;
     }
 
-
-    //metodo remover
-    public T remover(int posicao){
-        //Verificar se está vazia
-        if (estaVazia()){
-            return null;
-        }
-        //Remoção caso seja a posição 0
-        if (posicao == 0){
-            No<T>dadoRemovido=primeiro;
-            primeiro=dadoRemovido.getProximo();
-            if(primeiro!=null){
-                primeiro.setAnterior(null);
-            }
-            else {
-                ultimo=null;
-            }
-            return dadoRemovido.getDado();
-        }
-        No<T> noParaRemover = obterNo(posicao);
-        T dadoRemovido = noParaRemover.getDado();
-
-        //Remoção caso seja a posição final
-        else if(posicao == tamanho-1){
-            ultimo = noParaRemover.getAnterior();
-            if (ultimo != null) {
-                ultimo.setProximo(null);
-            }
-            return dadoRemovido;
-        }
-        else {
-            No<T> noAnterior = noParaRemover.getAnterior();
-            No<T> noProximo = noParaRemover.getProximo();
-            noAnterior.setProximo(noProximo);
-            noProximo.setAnterior(noAnterior);
-            return dadoRemovido;
-        }
-        tamanho-- ;
-    }
-
-    //Metodo obter
-    public T obter(int posicao){
-        if (estaVazia()){return null;}
-        No<T> buscador = obterNo(posicao);
-        return buscador.getDado();
-    }
-
-    //Metodo de Buscad de No, retorna o no(posição, não apenas o dado)
-    private No<T> obterNo(int posicao){
+    private No<T> obterNo(int posicao) {
         No<T> buscador = this.primeiro;
-        for(int i = 0; i < posicao; i++){
+        for (int i = 0; i < posicao; i++) {
             buscador = buscador.getProximo();
         }
         return buscador;
     }
 
     @Override
-    public void inserir(T elemento) {
-        No<T> novoNo = new No<>(elemento);
+    public void esvaziar() {
+        this.primeiro = null;
+        this.ultimo = null;
+        this.tamanho = 0;
+    }
+
+    @Override
+    public boolean contem(T dado) {
+        No<T> buscador = primeiro;
+        while (buscador != null) {
+            if (buscador.getDado().equals(dado)) {
+                return true;
+            }
+            buscador = buscador.getProximo();
+        }
+        return false;
+    }
+
+    @Override
+    public T remover(int posicao) {
+        if (estaVazia()) {
+            return null;
+        }
+
+        T dadoRemovido;
+
+        if (posicao == 0) {
+            dadoRemovido = primeiro.getDado();
+            primeiro = primeiro.getProximo();
+            if (primeiro == null) {
+                ultimo = null;
+            } else {
+                primeiro.setAnterior(null);
+            }
+        } else if (posicao == tamanho - 1) {
+            No<T> noParaRemover = ultimo;
+            dadoRemovido = noParaRemover.getDado();
+            ultimo = noParaRemover.getAnterior();
+            ultimo.setProximo(null);
+        } else {
+            No<T> noParaRemover = obterNo(posicao);
+            dadoRemovido = noParaRemover.getDado();
+            No<T> noAnterior = noParaRemover.getAnterior();
+            No<T> noProximo = noParaRemover.getProximo();
+            noAnterior.setProximo(noProximo);
+            noProximo.setAnterior(noAnterior);
+        }
+
+        tamanho--;
+        return dadoRemovido;
+    }
+
+    @Override
+    public T obter(int posicao) {
+        if (estaVazia()) {
+            return null;
+        }
+        No<T> buscador = obterNo(posicao);
+        return buscador.getDado();
+    }
+
+
+    @Override
+    public void inserir(T dado) {
+        No<T> novoNo = new No<>(dado);
         if (estaVazia()) {
             primeiro = novoNo;
             ultimo = novoNo;
@@ -77,6 +92,34 @@ public class ListaEncadeada<T> implements Lista<T> {
             novoNo.setAnterior(ultimo);
             ultimo = novoNo;
         }
+        tamanho++;
+    }
+    //Sobrecarga no metodo inserir
+    @Override
+    public void inserir(T dado, int posicao) {
+        No<T> novoNo = new No<>(dado);
+
+        if (estaVazia()) {
+            primeiro = novoNo;
+            ultimo = novoNo;
+        } else if (posicao == 0) {
+            novoNo.setProximo(primeiro);
+            primeiro.setAnterior(novoNo);
+            primeiro = novoNo;
+        } else if (posicao == tamanho) {
+            ultimo.setProximo(novoNo);
+            novoNo.setAnterior(ultimo);
+            ultimo = novoNo;
+        } else {
+            No<T> noLocomovido = obterNo(posicao);
+            No<T> noAnterior = noLocomovido.getAnterior();
+            
+            noAnterior.setProximo(novoNo);
+            novoNo.setAnterior(noAnterior);
+            novoNo.setProximo(noLocomovido);
+            noLocomovido.setAnterior(novoNo);
+        }
+
         tamanho++;
     }
 
@@ -106,6 +149,10 @@ public class ListaEncadeada<T> implements Lista<T> {
         return this.tamanho == 0;
     }
 
+    @Override
+    public void imprimir(){
+        System.out.println(toString());
+    }
     @Override
     public String toString() {
         if (estaVazia()) {
