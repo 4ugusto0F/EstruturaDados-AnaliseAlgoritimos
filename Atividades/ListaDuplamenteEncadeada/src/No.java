@@ -1,0 +1,32 @@
+public class No<T> {
+
+    private final T dado;
+    private No<T> proximo;
+    private No<T> anterior;
+
+    public No(T dado) {
+        this.dado = dado;
+        this.proximo = null;
+        this.anterior = null;
+    }
+
+    public T getDado() {
+        return this.dado;
+    }
+
+    public No<T> getProximo() {
+        return proximo;
+    }
+
+    public void setProximo(No<T> proximo) {
+        this.proximo = proximo;
+    }
+
+    public No<T> getAnterior() {
+        return this.anterior;
+    }
+
+    public void setAnterior(No<T> anterior) {
+        this.anterior = anterior;
+    }
+}

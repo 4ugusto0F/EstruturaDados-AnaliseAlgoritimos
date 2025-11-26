@@ -1,13 +1,35 @@
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
-void main() {
-    //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-    // to see how IntelliJ IDEA suggests fixing it.
-    IO.println(String.format("Hello and welcome!"));
+public class Main {
 
-    for (int i = 1; i <= 5; i++) {
-        //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-        // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-        IO.println("i = " + i);
+    public static void main(String[] args) {
+        emUmaListaVaziaTamanhoDeveSerZero();
+        emUmaListaVaziaPrimeiroDeveSerNulo();
+        emUmaListaVaziaUltimoDeveSerNulo();
+        System.out.println("Todos os testes passaram!");
+    }
+
+    private static void emUmaListaVaziaTamanhoDeveSerZero() {
+        ListaEncadeada<Integer> lista = new ListaEncadeada<>();
+
+        if (lista.getTamanho() != 0) {
+            throw new AssertionError("Tamanho de uma lista vazia deve ser zero.");
+        }
+
+        if (!lista.estaVazia()) {
+            throw new AssertionError("Uma lista vazia deve retornar true para estaVazia().");
+        }
+    }
+
+    private static void emUmaListaVaziaPrimeiroDeveSerNulo() {
+        ListaEncadeada<Integer> lista = new ListaEncadeada<>();
+        if (lista.getPrimeiro() != null) {
+            throw new AssertionError("Obter o primeiro elemento de uma lista vazia deve lançar uma exceção.");
+        }
+    }
+
+    private static void emUmaListaVaziaUltimoDeveSerNulo() {
+        ListaEncadeada<Integer> lista = new ListaEncadeada<>();
+        if (lista.getUltimo() != null) {
+            throw new AssertionError("Obter o último elemento de uma lista vazia deve lançar uma exceção.");
+        }
     }
 }
